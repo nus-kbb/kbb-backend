@@ -1,2 +1,4 @@
 FLASK
 mysql-connector-python==8.0.32
+pytest-cov
+flake8
