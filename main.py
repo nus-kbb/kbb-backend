@@ -1,3 +1,3 @@
-from backend import app
+from src import app
 
 app.run()
