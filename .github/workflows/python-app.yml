@@ -66,8 +66,8 @@ jobs:
       with:
         # Additional arguments for the sonarcloud scanner
         args: >
-          -Dsonar.projectKey="cherrythia_kbb-backend"
-          -Dsonar.organization="cherrythia"
+          -Dsonar.projectKey=cherrythia_kbb-backend
+          -Dsonar.organization=cherrythia
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.tests=tests/
           -Dsonar.sources=src/
