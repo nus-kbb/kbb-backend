@@ -1,33 +1,40 @@
 version: '3.8'
 
 services:
- backend:
-  build:
-   context: .
-   dockerfile: backend-dockerfile
-   tags:
-      # - "$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}"
-      - "registry/username/myrepos:my-other-tag"
-  ports:
-  - 8000:5000
-  volumes:
-  - ./:/app
-
- mysqldb:
+  frontend:
+    container_name: kbb-frontend
+    image: kbb-frontend:${Frontend_TAG}
     build:
-      context: .
-      dockerfile: mysql-dockerfile
-      tags:
-        - "mysql:mysql"
-        # - "registry/username/mysql:my-other-mysql"
+      context: ${DockerFileDir}
+      dockerfile: Dockerfile.frontend
+    ports:
+      - 5000:5000
+
+  backend:
+    container_name: kbb-backend
+    image: kbb-backend:${Backend_TAG}
+    build:
+      context: ${DockerFileDir}
+      dockerfile: Dockerfile.backend
+    ports:
+      - 5001:5000
+
+  mysqldb:
+    container_name: kbb-db
+    build:
+      context: ${DockerFileDir}
+      dockerfile: Dockerfile.db
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=p@ssw0rd1
-    volumes:
-      - mysql:/var/lib/mysql
-      - mysql_config:/etc/mysql
-volumes:
-  mysql:
-  mysql_config:
+      - MYSQL_ROOT_PASSWORD=root
 
+  adminer:
+    container_name: kbb-adminer
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mysqldb
+      ADMINER_DESIGN: pappu687
+    ports:
+      - 8080:8080
