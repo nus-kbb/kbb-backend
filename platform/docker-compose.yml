@@ -4,11 +4,9 @@ services:
   frontend:
     container_name: kbb-frontend
     image: kbb-frontend:${Frontend_TAG}
-    build:
-      context: ${DockerFileDir}
-      dockerfile: Dockerfile.frontend
-    ports:
-      - 5000:5000
+    depends_on:
+      - backend
+    # todo: add port mapping
 
   backend:
     container_name: kbb-backend
@@ -16,8 +14,10 @@ services:
     build:
       context: ${DockerFileDir}
       dockerfile: Dockerfile.backend
+    depends_on:
+      - mysqldb
     ports:
-      - 5001:5000
+      - 5000:5000
 
   mysqldb:
     container_name: kbb-db

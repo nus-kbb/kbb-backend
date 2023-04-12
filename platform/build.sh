@@ -1,1 +1,2 @@
-docker-compose build
+docker-compose build backend
+docker-compose build mysqldb

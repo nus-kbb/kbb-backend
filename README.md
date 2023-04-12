@@ -2,10 +2,11 @@
 
 ## Build image
 
+`working_dir=./platform`
 `docker image ls` is just to check whether your image is build with the correct ag
 
 ```
-sh platform/build.sh
+sh build.sh
 docker image ls
 ```
 
@@ -17,6 +18,8 @@ cat .env
 
 ## Launch local environment 
 
+`working_dir=./platform`
+
 ```
-sh platform/init_e2e.sh
+sh init_e2e.sh
 ```
