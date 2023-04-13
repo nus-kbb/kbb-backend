@@ -23,3 +23,6 @@ cat .env
 ```
 sh init_e2e.sh
 ```
+
+Backend 
+http://kbb-load-balancer-531067821.ap-southeast-1.elb.amazonaws.com:8080/home
