@@ -1,48 +1,36 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:364680233920:task-definition/kbb-backend-task:1",
+    "family": "kbb-backend-task",
+    "taskRoleArn": "arn:aws:iam::364680233920:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::364680233920:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
-            "name": "kbb-backend",
-            "image": "public.ecr.aws/f0v2z5x5/kbb-backend",
+            "name": "backend-container",
+            "image": "364680233920.dkr.ecr.ap-southeast-1.amazonaws.com/kbb-backend:latest",
             "cpu": 0,
+            "memory": 1000,
+            "memoryReservation": 500,
             "portMappings": [
                 {
-                    "name": "backend-container-port",
                     "containerPort": 5000,
-                    "hostPort": 5000,
-                    "protocol": "tcp",
-                    "appProtocol": "http"
+                    "hostPort": 0,
+                    "protocol": "tcp"
                 }
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-create-group": "true",
                     "awslogs-group": "/ecs/kbb-backend-task",
                     "awslogs-region": "ap-southeast-1",
                     "awslogs-stream-prefix": "ecs"
                 }
-            },
-            "healthCheck": {
-                "command": [
-                    "CMD-SHELL",
-                    "curl -f http://localhost:5000/home || exit 1"
-                ],
-                "interval": 30,
-                "timeout": 5,
-                "retries": 3,
-                "startPeriod": 60
             }
         }
     ],
-    "family": "kbb-backend-task",
-    "executionRoleArn": "arn:aws:iam::364680233920:role/ecsTaskExecutionRole",
-    "networkMode": "awsvpc",
+    "networkMode": "bridge",
     "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
@@ -54,37 +42,27 @@
             "name": "ecs.capability.execution-role-awslogs"
         },
         {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
-            "name": "ecs.capability.container-health-check"
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
         },
         {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
         },
         {
-            "name": "ecs.capability.task-eni"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+            "name": "ecs.capability.execution-role-ecr-pull"
         }
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2",
-        "FARGATE"
+        "EXTERNAL",
+        "EC2"
     ],
     "requiresCompatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
-    "cpu": "1024",
-    "memory": "2048",
-    "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
-        "operatingSystemFamily": "LINUX"
-    },
-    "registeredAt": "2023-04-12T13:53:07.714Z",
-    "registeredBy": "arn:aws:iam::364680233920:root",
-    "tags": []
+        "EC2"
+    ]
 }
