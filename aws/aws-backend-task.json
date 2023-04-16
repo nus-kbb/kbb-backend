@@ -6,8 +6,8 @@
         {
             "name": "backend-container",
             "image": "364680233920.dkr.ecr.ap-southeast-1.amazonaws.com/kbb-backend:latest",
-            "cpu": 0,
-            "memory": 1000,
+            "cpu": 512,
+            "memory": 500,
             "memoryReservation": 500,
             "portMappings": [
                 {
