@@ -25,10 +25,10 @@ sh init_e2e.sh
 ```
 
 ## AWS URL  
-Backend - http://kbb-load-balancer-531067821.ap-southeast-1.elb.amazonaws.com:8080/home
+Backend - http://kbb-load-balancer-531067821.ap-southeast-1.elb.amazonaws.com:5000/home
 
 
-## DAST SonarCloud 
+## SAST SonarCloud 
 Backend -  https://sonarcloud.io/project/overview?id=cherrythia_kbb-backend
 
 ## SCA 
