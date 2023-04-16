@@ -6,9 +6,9 @@
         {
             "name": "backend-container",
             "image": "364680233920.dkr.ecr.ap-southeast-1.amazonaws.com/kbb-backend:latest",
-            "cpu": 512,
-            "memory": 500,
-            "memoryReservation": 500,
+            "cpu": 0,
+            "memory": 512,
+            "memoryReservation": 128,
             "portMappings": [
                 {
                     "containerPort": 5000,
@@ -64,5 +64,7 @@
     ],
     "requiresCompatibilities": [
         "EC2"
-    ]
+    ],
+    "cpu": "256",
+    "memory": "512"
 }
