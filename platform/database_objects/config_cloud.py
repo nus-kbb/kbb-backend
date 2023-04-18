@@ -1,2 +1,10 @@
 # string to configure the database connection - localhost (will have to change to cloud in the future)
-postgres_url = "postgresql://<user>:<password>@localhost:5432/kbb_db"
+# Database parameters for local MySQL database
+local_host = "localhost"         
+local_user = "root"          
+local_passwd = ""    
+local_database = "kbb_db"
+
+
+local_mysql_url = f"mysql+pymysql://root:<insert_password>@localhost/kbb_db"
+# local_mysql_url = f"mysql+pymysql://{local_user}:{local_passwd}@{local_host}/{local_database}"

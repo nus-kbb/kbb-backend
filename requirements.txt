@@ -1,6 +1,7 @@
 FLASK
-mysql-connector-python==8.0.32
 pytest-cov
 flake8
 sqlalchemy
-psycopg2
+PyMySQL
+mysql-connector-python==8.0.32
+# mysqlclient

@@ -4,24 +4,25 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
-from config_local import postgres_url
 
-from .project import Project
+from config_local import local_mysql_url, local_host, local_user, local_passwd, local_database
+
+from project import Project
 
 Base = declarative_base()
-engine = create_engine(postgres_url)
+
+engine = create_engine(local_mysql_url)
 Session = sessionmaker(bind=engine)
 
 class User(Base):
     __tablename__ = "user_table"
     id = Column(Integer, primary_key=True)
-    user_email = Column(String, unique=True) 
-    project_id = Column(String, ForeignKey(Project.id))
+    user_email = Column(String(100), unique=True) 
+    project_id = Column(Integer, ForeignKey(Project.id))
     # TODO relationship with project
-    user_password = Column(String)
+    user_password = Column(String(100))
     created_on = Column(DateTime(timezone=True),server_default=func.now())
     
-
 # CRUD operations - WIP (Just an example - might be moved to DAO)
 def get_user():
     try:
@@ -58,3 +59,4 @@ def delete_all_user():
 
 Base.metadata.create_all(engine) # Line to initialize the database
 
+print('User table created!')
