@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
 
-from config_local import local_mysql_url
+from config import local_mysql_url
 
 Base = declarative_base()
 engine = create_engine(local_mysql_url)

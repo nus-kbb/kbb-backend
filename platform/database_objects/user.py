@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
 
-from config_local import local_mysql_url, local_host, local_user, local_passwd, local_database
+from config import local_mysql_url, local_host, local_user, local_passwd, local_database
 
 from project import Project
 

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
-from config_local import local_mysql_url
+from config import local_mysql_url
 
 from user import User
 from project import Project
