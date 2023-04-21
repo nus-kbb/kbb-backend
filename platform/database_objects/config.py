@@ -3,7 +3,7 @@ import os
 # Database parameters for local MySQL database
 local_host = os.getenv("localhost")
 local_user = os.getenv("db_user")          
-local_passwd = os.getenv("db_password")
+local_passwd = os.getenv("db_pass")
 local_database = "kbb_db"
 
 # local_mysql_url = f"mysql+pymysql://root:<insert_password>@localhost/kbb_db"
