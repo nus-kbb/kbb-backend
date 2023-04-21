@@ -1,5 +1,5 @@
 import enum
-class Status(enum):
+class Status(enum.Enum):
     WAITING="waiting"
     DEVELOPING="developing"
     REVIEWING="reviewing"
