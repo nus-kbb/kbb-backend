@@ -102,10 +102,10 @@ jobs:
       run: | 
         echo "variable DBURL : ${{ vars.DBURL }}"
         echo "variable DBURL : ${{ vars.DBUSER }}"
-        mysql -h ${{ vars.DBURL }} -u ${{ vars.DBUSER }} --password='${{ secrets.DBSECRET }}' < platform/sql-scripts/init.sql
+        mysql -h ${{ vars.DBURL }} -u ${{ vars.DBUSER }} --password='${{ secrets.DBSECRET }}' < environment/sql-scripts/init.sql
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         export localhost="${{ vars.DBURL }}:3306"
         export db_user="${{ vars.DBUSER }}"
-        export db_pass="${{ secrets.DBSECRET }}"
-        sh platform/sql-scripts/setupDB.sh
+        export db_password="${{ secrets.DBSECRET }}"
+        sh environment/sql-scripts/setupDB.sh
