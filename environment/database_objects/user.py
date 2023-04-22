@@ -59,6 +59,3 @@ def delete_all_user():
 Base.metadata.create_all(engine) # Line to initialize the database
 
 print('User table created!')
-# session = Session()
-# session.add(User(user_email="default@default.com", project_id=1, user_password="default"))
-# session.commit()
