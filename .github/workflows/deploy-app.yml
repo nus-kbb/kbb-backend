@@ -28,7 +28,7 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "feat/setup-cicd" ]
 
 env:
   AWS_REGION: ap-southeast-1                  # set this to your preferred AWS region, e.g. us-west-1
@@ -92,3 +92,21 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+
+    - name: Python Setup
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: Setup DB
+      run: | 
+        echo "variable DBURL : ${{ vars.DBURL }}"
+        echo "variable DBURL : ${{ vars.DBUSER }}"
+        mysql -h ${{ vars.DBURL }} -u ${{ vars.DBUSER }} --password='${{ secrets.DBSECRET }}' < environment/sql-scripts/init.sql
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        export localhost="${{ vars.DBURL }}:3306"
+        export db_user="${{ vars.DBUSER }}"
+        export db_password="${{ secrets.DBSECRET }}"
+        sh environment/sql-scripts/setupDB.sh
+        mysql -h ${{ vars.DBURL }} -u ${{ vars.DBUSER }} --password='${{ secrets.DBSECRET }}' < environment/sql-scripts/initDefault.sql
