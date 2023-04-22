@@ -1,8 +1,8 @@
 from flask import Flask, request
-from .dto.task.task_dto import Task
+from .controller.task_controller.task_dto.task_dto import Task
 from .controller.task_controller.task_controller import TaskController
 from .http_status_code_enum import HttpCode
-
+import json
 
 app = Flask(__name__)
 taskController = TaskController()
@@ -33,10 +33,9 @@ def create_task_handler():
 
 @app.route('/task/get_all_task', methods=['GET'])
 def get_all_task_handler():
-    taskList, err = taskController.GetAllTask()
-    if err != None:
-        return err, HttpCode.BadRequest.value
-    return taskList, HttpCode.Success.value
+    taskList = taskController.GetAllTask()
+    jsonTaskList = json.dumps(taskList, indent = 8)
+    return jsonTaskList, HttpCode.Success.value, {'Content-Type': 'application/json'}
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)

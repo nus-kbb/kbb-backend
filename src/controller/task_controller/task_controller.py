@@ -1,5 +1,5 @@
 from .task_dao.task_dao import TaskDao
-
+from .task_dto.task_dto import Task
 class TaskController:
     taskDao = TaskDao()
     def __init__(self) -> None:
@@ -12,6 +12,5 @@ class TaskController:
         return None
 
     def GetAllTask(self):
-        print("calling dao to get task")
-        taskList = []
-        return taskList, None
+        taskDictList = self.taskDao.GetAllTask()
+        return taskDictList

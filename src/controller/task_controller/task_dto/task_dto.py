@@ -36,4 +36,11 @@ class Task:
         else:
             return jsonObj, None
 
+    def ParseDict(self, dictObj):
+        self.id = dictObj["id"]
+        self.project_id = dictObj["project_id"]
+        self.user_id = dictObj["user_id"]
+        self.content = dictObj["content"]
+        self.status = dictObj["status"]
+
 
