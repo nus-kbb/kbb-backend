@@ -1,17 +1,17 @@
 from flask import Flask, request
-from .controller.task_controller.task_dto.task_dto import Task
-from .controller.task_controller.task_controller import TaskController
-from .http_status_code_enum import HttpCode
+from src.controller.task_controller.task_dto.task_dto import Task
+from src.controller.task_controller.task_controller import TaskController
+from src.controller.user_controller.user_controller import UserController
+from src.http_status_code_enum import HttpCode
 import json
 
 app = Flask(__name__)
 taskController = TaskController()
-
+userController = UserController()
 
 @app.route('/home')
 def hello_world():
     return 'Serving Hello world!'
-
 
 @app.route('/task/create_task', methods=['POST'])
 def create_task_handler():
@@ -36,6 +36,12 @@ def get_all_task_handler():
     taskList = taskController.GetAllTask()
     jsonTaskList = json.dumps(taskList, indent = 8)
     return jsonTaskList, HttpCode.Success.value, {'Content-Type': 'application/json'}
+
+# app.add_url_rule('/users', 'get_all_users', UserController.get_all_users, methods=['GET'])
+@app.route('/users', methods=['GET'])
+def get_all_users_handler():
+    users = userController.get_all_users()
+    return users
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)

@@ -5,4 +5,5 @@ sqlalchemy
 PyMySQL
 mysql-connector-python==8.0.32
 cryptography
+python-dotenv
 # mysqlclient

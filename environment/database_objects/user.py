@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
 
-from config import local_mysql_url, local_host, local_user, local_passwd, local_database
+from config import local_mysql_url
 
 Base = declarative_base()
 
@@ -21,40 +21,6 @@ class User(Base):
     # TODO relationship with project
     user_password = Column(String(100))
     created_on = Column(DateTime(timezone=True),server_default=func.now())
-    
-# CRUD operations - WIP (Just an example - might be moved to DAO)
-def get_user():
-    try:
-        session = Session()
-        session.delete()
-        session.commit()
-    finally:
-        session.close()
-
-def update_user():
-    try:
-        session = Session()
-        session.delete()
-        session.commit()
-    finally:
-        session.close()
-
-def delete_user():
-    try:
-        session = Session()
-        session.delete()
-        session.commit()
-    finally:
-        session.close()
-
-# For testing purposes
-def delete_all_user():
-    try:
-        session = Session()
-        all = session.query().all()
-        return all
-    finally:
-        pass
 
 Base.metadata.create_all(engine) # Line to initialize the database
 
