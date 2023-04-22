@@ -1,6 +1,5 @@
 /venv
 /myenv
 .coverage
-config_local.py
-platform/database_objects/__pycache__/config_local.cpython-39.pyc
+*.pyc
 .DS_Store

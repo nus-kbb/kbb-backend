@@ -18,9 +18,14 @@ services:
       - mysqldb
     ports:
       - 5000:5000
+    env_file:
+      - .env_local
 
   mysqldb:
     container_name: kbb-db
+    image: kbb-db:${Backend_TAG}
+    volumes:
+      - "./sql-scripts:/docker-entrypoint-initdb.d"
     build:
       context: ${DockerFileDir}
       dockerfile: Dockerfile.db
@@ -38,3 +43,14 @@ services:
       ADMINER_DESIGN: pappu687
     ports:
       - 8080:8080
+
+  initmysqldb:
+    image: kbb-db-init:${Backend_TAG}
+    container_name: kbb-db-init
+    build:
+      context: ${DockerFileDir}
+      dockerfile: Dockerfile.db_init
+    depends_on:
+      - mysqldb
+    env_file:
+      - .env_local

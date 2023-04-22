@@ -1,21 +1,25 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
+from config import local_mysql_url
 
-from config_local import local_mysql_url
+from user import User
+from project import Project
 
 Base = declarative_base()
 engine = create_engine(local_mysql_url)
 Session = sessionmaker(bind=engine)
 
-class Project(Base):
-    __tablename__ = "project_table"
+class Task(Base):
+    __tablename__ = "task_table"
     id = Column(Integer, primary_key=True)
-    project_name = Column(String(100), unique=True)
+    project_id = Column(Integer, ForeignKey(Project.id)) 
+    # TODO relationship with project and user
+    user_id = Column(Integer, ForeignKey(User.id))
     status = Column(String(100))
     content = Column(String(100))
     created_on = Column(DateTime(timezone=True),server_default=func.now())
 
 Base.metadata.create_all(engine) # Line to initialize the database
-print('Project table created')
+print('Task table created')
