@@ -42,7 +42,7 @@ def get_all_task_handler():
 projects = {}
 
 # Endpoint to create a new project
-@app.route('/create_project', methods=['POST'])
+@app.route('/project/create_project', methods=['POST'])
 def create_project():
     project_data = request.get_json()
 
@@ -53,11 +53,17 @@ def create_project():
     # Create the new project
     projects[project_data['name']] = {
         'name': project_data['name'],
-        'description': project_data['description'],
-        'tasks': []
+        'content': project_data['description'],
+        'id': [],
+        'status':'New'
     }
 
     return jsonify({'message': 'Project created successfully.'}), 201
+
+# Endpoint to get all projects
+@app.route('/project/get_projects', methods=['GET'])
+def get_projects():
+    return jsonify(list(projects.values())), 200
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)
