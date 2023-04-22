@@ -44,9 +44,6 @@ services:
     ports:
       - 8080:8080
 
-  mysql-cli:
-    image: imega/mysql-client:latest
-
   initmysqldb:
     image: kbb-db-init:${Backend_TAG}
     container_name: kbb-db-init
