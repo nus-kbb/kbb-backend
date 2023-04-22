@@ -5,4 +5,4 @@ COPY . .
 RUN pip3 install -r requirements.txt
 
 # CMD python3 environment/database_objects/user.py; python3 environment/database_objects/project.py; python3 environment/database_objects/task.py
-CMD python3 environment/database_objects/task.py
+CMD sh environment/sql-scripts/setupDB.sh

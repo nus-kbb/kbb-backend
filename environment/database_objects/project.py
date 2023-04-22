@@ -19,6 +19,6 @@ class Project(Base):
 
 Base.metadata.create_all(engine) # Line to initialize the database
 print('Project table created')
-session = Session()
-session.add(Project(project_name="default", status="active", content=""))
-session.commit()
+# session = Session()
+# session.add(Project(project_name="default", status="active", content=""))
+# session.commit()
