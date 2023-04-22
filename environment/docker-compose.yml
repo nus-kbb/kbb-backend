@@ -18,6 +18,8 @@ services:
       - mysqldb
     ports:
       - 5000:5000
+    env_file:
+      - .env_local
 
   mysqldb:
     container_name: kbb-db
@@ -50,3 +52,5 @@ services:
       dockerfile: Dockerfile.db_init
     depends_on:
       - mysqldb
+    env_file:
+      - .env_local

@@ -8,7 +8,7 @@ from config import local_mysql_url
 Base = declarative_base()
 engine = create_engine(local_mysql_url)
 Session = sessionmaker(bind=engine)
-
+print("db url", local_mysql_url)
 class Project(Base):
     __tablename__ = "project_table"
     id = Column(Integer, primary_key=True)
@@ -19,3 +19,6 @@ class Project(Base):
 
 Base.metadata.create_all(engine) # Line to initialize the database
 print('Project table created')
+session = Session()
+session.add(Project(project_name="default", status="active", content=""))
+session.commit()

@@ -1,7 +1,7 @@
 from flask import Flask, request
-from dto.task.task_dto import Task
-from controller.task_controller.task_controller import TaskController
-from http_status_code_enum import HttpCode
+from .dto.task.task_dto import Task
+from .controller.task_controller.task_controller import TaskController
+from .http_status_code_enum import HttpCode
 
 
 app = Flask(__name__)
