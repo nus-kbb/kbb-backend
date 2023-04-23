@@ -2,7 +2,7 @@ from flask import Flask, request
 from src.controller.task_controller.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
-from src.http_status_code_enum import HttpCode
+from src.http_status_code_enum import HttpCode, HTTPContentType
 import json
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ def hello_world():
 @app.route('/task/create_task', methods=['POST'])
 def create_task_handler():
     content_type = request.headers.get('Content-Type')
-    if (content_type == 'application/json'):
+    if (content_type == HTTPContentType.JSON.value):
         task = Task()
         print(request.json)
         err = task.Parse(request.json)
@@ -35,7 +35,7 @@ def create_task_handler():
 def get_all_task_handler():
     taskList = taskController.GetAllTask()
     jsonTaskList = json.dumps(taskList, indent = 8)
-    return jsonTaskList, HttpCode.Success.value, {'Content-Type': 'application/json'}
+    return jsonTaskList, HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
 
 @app.route('/user', methods=['GET'])
 def user_handler_Get():
@@ -51,12 +51,12 @@ def user_handler_Get():
 @app.route('/user', methods=['POST', 'PUT', 'DELETE'])
 def user_handler():
     if request.method == 'POST':
-        if request.headers.get('Content-Type') == 'application/json':
+        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             return userController.create_user(request)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'PUT':
-        if request.headers.get('Content-Type') == 'application/json':
+        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             return userController.update_user_by_userEmail(request)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
