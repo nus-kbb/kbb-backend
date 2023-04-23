@@ -37,11 +37,23 @@ def get_all_task_handler():
     jsonTaskList = json.dumps(taskList, indent = 8)
     return jsonTaskList, HttpCode.Success.value, {'Content-Type': 'application/json'}
 
-# app.add_url_rule('/users', 'get_all_users', UserController.get_all_users, methods=['GET'])
-@app.route('/users', methods=['GET'])
-def get_all_users_handler():
-    users = userController.get_all_users()
-    return users
+@app.route('/user', methods=['GET', 'POST'])
+def user_handler():
+    if request.method == 'POST':
+        if request.headers.get('Content-Type') == 'application/json':
+            return userController.create_user(request)
+        else:
+            return "Invalid Content-Type", HttpCode.BadRequest.value
+    elif request.method == 'GET':
+        userEmail = request.args.get('userEmail',default='',type=str)
+        if len(userEmail) == 0:
+            return userController.get_all_users()
+        elif len(userEmail) > 0:
+            return userController.get_user_by_userEmail(userEmail)
+        else:
+            return "Invalid Get User", HttpCode.BadRequest.value
+    return "Invalid User Request", HttpCode.BadRequest.value
+
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)
