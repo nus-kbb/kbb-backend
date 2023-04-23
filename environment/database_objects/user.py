@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
 
-from config import local_mysql_url
+from environment.database_objects.config import local_mysql_url
 
 Base = declarative_base()
 

@@ -1,4 +1,5 @@
-from environment.database_objects.config import local_mysql_url
+from environment.database_objects.config import *
+from sqlalchemy import text
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
@@ -14,3 +15,6 @@ class DBDAO:
 
     def getSession(self):
         return self.session()
+    
+    def getEngine(self):
+        return self.engine
