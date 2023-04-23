@@ -37,22 +37,34 @@ def get_all_task_handler():
     jsonTaskList = json.dumps(taskList, indent = 8)
     return jsonTaskList, HttpCode.Success.value, {'Content-Type': 'application/json'}
 
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user', methods=['GET'])
+def user_handler_Get():
+    userEmail = request.args.get('userEmail',default='',type=str)
+    if len(userEmail) == 0:
+        return userController.get_all_users()
+    elif len(userEmail) > 0:
+        return userController.get_user_by_userEmail(userEmail)
+    else:
+        return "Invalid Get User", HttpCode.BadRequest.value
+
+
+@app.route('/user', methods=['POST', 'PUT', 'DELETE'])
 def user_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == 'application/json':
             return userController.create_user(request)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
-    elif request.method == 'GET':
-        userEmail = request.args.get('userEmail',default='',type=str)
-        if len(userEmail) == 0:
-            return userController.get_all_users()
-        elif len(userEmail) > 0:
-            return userController.get_user_by_userEmail(userEmail)
+    elif request.method == 'PUT':
+        if request.headers.get('Content-Type') == 'application/json':
+            return userController.update_user_by_userEmail(request)
         else:
-            return "Invalid Get User", HttpCode.BadRequest.value
-    return "Invalid User Request", HttpCode.BadRequest.value
+            return "Invalid Content-Type", HttpCode.BadRequest.value
+    elif request.method == 'DELETE':
+        userEmail = request.args.get('userEmail',default='',type=str)
+        return userController.delete_user_by_userEmail(userEmail)
+    else:
+        return "Invalid User Request", HttpCode.BadRequest.value
 
 
 if __name__ == "__main__":

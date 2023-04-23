@@ -19,7 +19,6 @@ class UserDAO(DBDAO):
                 return _user
             except Exception as e:
                 return e
-        
 
     def get_all_user(self):
         with self.engine.connect() as conn:
@@ -36,3 +35,21 @@ class UserDAO(DBDAO):
             # Since user is unique, we can return the first result
             user = User(results[0]._mapping["user_email"], results[0]._mapping["user_password"], results[0]._mapping["project_id"])
             return user.to_dict()
+        
+    def update_user_by_userEmail(self, userEmail, user):
+        with self.engine.connect() as conn:
+            try:
+                conn.execute(text(f"UPDATE {local_database}.{self.table} SET user_password = '{user.user_password}', project_id = '{user.project_id}' WHERE user_email = '{userEmail}'"))
+                conn.commit()
+                return user.to_dict()
+            except Exception as e:
+                return e
+        
+    def delete_user_by_userEmail(self, userEmail):
+        with self.engine.connect() as conn:
+            try: 
+                conn.execute(text(f"DELETE FROM {local_database}.{self.table} WHERE user_email = '{userEmail}'"))
+                conn.commit()
+                return "Success"
+            except Exception as e:
+                return e

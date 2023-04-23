@@ -27,3 +27,15 @@ class UserController:
     def get_user_by_userEmail(self, userEmail):
         user = self.userDAO.get_user_by_userEmail(userEmail)
         return jsonify(user)
+    
+    def delete_user_by_userEmail(self, userEmail):
+        result = self.userDAO.delete_user_by_userEmail(userEmail)
+        return jsonify(result)
+    
+    def update_user_by_userEmail(self, request):
+        user_email = request.json["user_email"]
+        user_password = request.json["user_password"]
+        project_id = request.json["project_id"]
+        user = User(user_email, user_password, project_id)
+        result = self.userDAO.update_user_by_userEmail(user_email, user)
+        return jsonify(result)
