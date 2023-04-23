@@ -9,10 +9,10 @@ class UserController:
     def __init__(self) -> None:
         pass
 
-    def create_user(self,request):
-        user_email = request.json["user_email"]
-        user_password = request.json["user_password"]
-        project_id = request.json["project_id"]
+    def create_user(self,json):
+        user_email = json["user_email"]
+        user_password = json["user_password"]
+        project_id = json["project_id"]
         user = User(user_email, user_password, project_id)
         try:
             user = self.userDAO.create_user(user)
@@ -32,10 +32,10 @@ class UserController:
         result = self.userDAO.delete_user_by_userEmail(userEmail)
         return jsonify(result)
     
-    def update_user_by_userEmail(self, request):
-        user_email = request.json["user_email"]
-        user_password = request.json["user_password"]
-        project_id = request.json["project_id"]
+    def update_user_by_userEmail(self, json):
+        user_email = json["user_email"]
+        user_password = json["user_password"]
+        project_id = json["project_id"]
         user = User(user_email, user_password, project_id)
         result = self.userDAO.update_user_by_userEmail(user_email, user)
         return jsonify(result)

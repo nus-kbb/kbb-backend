@@ -52,12 +52,12 @@ def user_handler_Get():
 def user_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            return userController.create_user(request)
+            return userController.create_user(request.json)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'PUT':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            return userController.update_user_by_userEmail(request)
+            return userController.update_user_by_userEmail(request.json)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'DELETE':
