@@ -22,3 +22,13 @@ class TaskDao:
             conn.execute(text(f"INSERT INTO  {self.db}.{self.taskTabName} (`project_id`, `user_id`, `status`, `content`) VALUES ({task.project_id},  {task.user_id},  '{task.status.value}',  '{task.content}')"))
             conn.commit()
     
+    def UpdateTaskEntry(self, task):
+        with self.engine.connect() as conn:
+            conn.execute(text(f"UPDATE {self.db}.{self.taskTabName} SET `project_id` = {task.project_id}, `user_id` = {task.user_id}, `status` = '{task.status.value}', `content` = '{task.content}' WHERE `id` = {task.id}"))
+            conn.commit()
+    
+    def DeleteTaskEntry(self, task):
+        with self.engine.connect() as conn:
+            conn.execute(text(f"DELETE FROM {self.db}.{self.taskTabName} WHERE `id` = {task.id}"))
+            conn.commit()
+    
