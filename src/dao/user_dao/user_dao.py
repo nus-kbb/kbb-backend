@@ -24,11 +24,11 @@ class UserDAO(DBDAO):
     def get_all_user(self):
         with self.engine.connect() as conn:
             results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table}")).all()
-            list = []
+            _user = []
             for it in results:
                 user = User.from_dict(it._mapping)
-                list.append(user.to_dict())
-            return list
+                _user.append(user.to_dict())
+            return _user
         
     def get_user_by_userEmail(self, userEmail):
         with self.engine.connect() as conn:
