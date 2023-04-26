@@ -1,5 +1,5 @@
-from flask import Flask, request
-from src.controller.task_controller.task_dto.task_dto import Task
+from flask import Flask, request, jsonify
+from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
 from src.http_status_code_enum import HttpCode, HTTPContentType
@@ -17,15 +17,16 @@ def hello_world():
 def create_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == HTTPContentType.JSON.value):
-        task = Task()
+        task = Task(**request.json)
         print(request.json)
-        err = task.Parse(request.json)
+        err = task.Validate()
+        # err = task.Parse(request.json)
         if err != None:
             return err, HttpCode.BadRequest.value
         
         err = taskController.CreateTask(task)
         if err != None:
-            return err, HttpCode.BadRequest.value
+            return err.__str__, HttpCode.BadRequest.value
         
         return "create task successful", HttpCode.Success.value
     
@@ -34,8 +35,7 @@ def create_task_handler():
 @app.route('/task/get_all_task', methods=['GET'])
 def get_all_task_handler():
     taskList = taskController.GetAllTask()
-    jsonTaskList = json.dumps(taskList, indent = 8)
-    return jsonTaskList, HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
+    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
 
 @app.route('/user', methods=['GET'])
 def user_handler_Get():
