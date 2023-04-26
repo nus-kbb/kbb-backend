@@ -14,9 +14,10 @@ class TaskDao(DBDAO):
     def CreateTaskEntry(self, task):
         with self.engine.connect() as conn:
             try:
-                conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`project_id`, `user_id`, `status`, `content`) VALUES ({task.project_id},  {task.user_id},  '{task.status.value}',  '{task.content}')"))
+                conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`project_id`, `user_id`, `status`, `content`) VALUES ({task.project_id},  {task.user_id},  '{task.status}',  '{task.content}')"))
                 conn.commit()
             except Exception as e:
+                print("Error create task: ", e)
                 return e
     
     def GetAllTask(self):

@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 
 class DBDAO:
     Base = declarative_base()
-    engine = create_engine(local_mysql_url)
+    engine = create_engine(local_mysql_url, future=True)
     session = sessionmaker(bind=engine)
     print("db url", local_mysql_url)
     

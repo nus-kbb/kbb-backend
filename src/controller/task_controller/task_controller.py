@@ -6,10 +6,7 @@ class TaskController:
         pass
 
     def CreateTask(self, task):
-        self.taskDao.CreateTaskEntry(task)
-        # call dao to create task
-        print("calling dao to create task")
-        return None
+        return self.taskDao.CreateTaskEntry(task)
 
     def GetAllTask(self):
         taskDictList = self.taskDao.GetAllTask()

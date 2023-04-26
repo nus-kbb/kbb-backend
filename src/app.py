@@ -17,15 +17,16 @@ def hello_world():
 def create_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == HTTPContentType.JSON.value):
-        task = Task()
+        task = Task(**request.json)
         print(request.json)
-        err = task.Parse(request.json)
+        err = task.Validate()
+        # err = task.Parse(request.json)
         if err != None:
             return err, HttpCode.BadRequest.value
         
         err = taskController.CreateTask(task)
         if err != None:
-            return err, HttpCode.BadRequest.value
+            return err.__str__, HttpCode.BadRequest.value
         
         return "create task successful", HttpCode.Success.value
     
