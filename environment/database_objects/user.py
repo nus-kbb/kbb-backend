@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func
 from sqlalchemy import create_engine
 
-from environment.database_objects.config import local_mysql_url
+from config import local_mysql_url
 
 Base = declarative_base()
 
@@ -16,7 +16,7 @@ Session = sessionmaker(bind=engine)
 class User(Base):
     __tablename__ = "user_table"
     id = Column(Integer, primary_key=True)
-    user_email = Column(String(100), unique=True) 
+    user_email = Column(String(100), unique=True)
     project_id = Column(Integer)
     # TODO relationship with project
     user_password = Column(String(100))

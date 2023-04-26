@@ -13,12 +13,14 @@ class UserController:
         user_email = json["user_email"]
         user_password = json["user_password"]
         project_id = json["project_id"]
-        user = User(user_email, user_password, project_id)
+        # fake id to init User object
+        user = User(1,user_email, user_password, project_id)
         try:
             user = self.userDAO.create_user(user)
+            print(user)
             return jsonify(user)
         except Exception as e:
-            return "Fail to create. User_email must be unique", HttpCode.BadRequest.value
+            return "Fail to create", HttpCode.BadRequest.value
     
     def get_all_users(self):
         users = self.userDAO.get_all_user()
@@ -33,9 +35,13 @@ class UserController:
         return jsonify(result)
     
     def update_user_by_userEmail(self, json):
+        id = json["id"]
         user_email = json["user_email"]
         user_password = json["user_password"]
         project_id = json["project_id"]
-        user = User(user_email, user_password, project_id)
+        user = User(id, user_email, user_password, project_id)
         result = self.userDAO.update_user_by_userEmail(user_email, user)
-        return jsonify(result)
+        if result == None:
+            return "Fail to update", HttpCode.BadRequest.value
+        else:
+            return jsonify(result)
