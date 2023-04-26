@@ -1,5 +1,5 @@
-from .task_dao.task_dao import TaskDao
-from .task_dto.task_dto import Task
+from src.dao.task_dao.task_dao import TaskDao
+
 class TaskController:
     taskDao = TaskDao()
     def __init__(self) -> None:

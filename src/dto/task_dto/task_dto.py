@@ -1,11 +1,11 @@
-import json
-
-from .status_enum import Status
+from src.dto.task_dto.status_enum import Status
 
 class Task:
-    def __init__(self) -> None:
+    def __init__(self, **kwargs) -> None:
+        for key, value in kwargs.items():
+            self.__dict__[key] = value
         pass
-
+    
     def SetAssignee(self, assigneeId) -> None:
         self.assignee = assigneeId
 
