@@ -18,7 +18,7 @@ class TaskDao(DBDAO):
                 conn.commit()
             except Exception as e:
                 print("Error create task: ", e)
-                return e
+                return e.__str__
     
     def GetAllTask(self):
         with self.engine.connect() as conn:
