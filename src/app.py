@@ -63,5 +63,33 @@ def user_handler():
         return "Invalid User Request", HttpCode.BadRequest.value
 
 
+
+# A dictionary to store the projects
+projects = {}
+
+# Endpoint to create a new project
+@app.route('/project/create_project', methods=['POST'])
+def create_project():
+    project_data = request.get_json()
+
+    # Check if the project name is already taken
+    if project_data['name'] in projects:
+        return jsonify({'error': 'Project name already taken.'}), 400
+
+    # Create the new project
+    projects[project_data['name']] = {
+        'name': project_data['name'],
+        'content': project_data['description'],
+        'id': [],
+        'status':'New'
+    }
+
+    return jsonify({'message': 'Project created successfully.'}), 201
+
+# Endpoint to get all projects
+@app.route('/project/get_projects', methods=['GET'])
+def get_projects():
+    return jsonify(list(projects.values())), 200
+
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)
