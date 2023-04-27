@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
+from src.controller.project_controller.project_controller import ProjectController
 from src.http_status_code_enum import HttpCode, HTTPContentType
 import json
 
@@ -64,32 +65,17 @@ def user_handler():
 
 
 
-# A dictionary to store the projects
-projects = {}
+@app.route('/project', methods=['POST'])
+def project_handler():
+    if request.method == 'POST':
+        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
+            return ProjectController.create_project(request.json)
+        else:
+            return "Invalid Content-Type", HttpCode.BadRequest.value
+    else:
+        return "Invalid User Request", HttpCode.BadRequest.value
 
-# Endpoint to create a new project
-@app.route('/project/create_project', methods=['POST'])
-def create_project():
-    project_data = request.get_json()
 
-    # Check if the project name is already taken
-    if project_data['name'] in projects:
-        return jsonify({'error': 'Project name already taken.'}), 400
-
-    # Create the new project
-    projects[project_data['name']] = {
-        'name': project_data['name'],
-        'content': project_data['description'],
-        'id': [],
-        'status':'New'
-    }
-
-    return jsonify({'message': 'Project created successfully.'}), 201
-
-# Endpoint to get all projects
-@app.route('/project/get_projects', methods=['GET'])
-def get_projects():
-    return jsonify(list(projects.values())), 200
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0', port=3000)
