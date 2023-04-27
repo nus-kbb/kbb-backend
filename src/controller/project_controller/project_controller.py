@@ -14,7 +14,7 @@ class ProjectController:
         status = json["status"]
         content = json["content"]
         # fake id to init project object
-        user = Project(1,project_name, status, content)
+        project = Project(1,project_name, status, content)
         try:
             project = self.projectDAO.create_project(project)
             print(project)

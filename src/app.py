@@ -69,7 +69,8 @@ def user_handler():
 def project_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            return ProjectController.create_project(request.json)
+            print(request.json)
+            return ProjectController().create_project(request.json)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     else:
