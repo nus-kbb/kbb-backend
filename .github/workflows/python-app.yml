@@ -37,7 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and generate coverage file
       run: |
-          pytest --cov=src --cov-report xml:coverage.xml tests/
+          pytest --cov=src --cov-report xml:tests/coverage.xml tests/
           pwd
           ls -al
     - uses: actions/upload-artifact@master

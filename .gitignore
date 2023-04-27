@@ -1,3 +1,5 @@
 /venv
 /myenv
 .coverage
+*.pyc
+.DS_Store
