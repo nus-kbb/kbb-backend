@@ -22,12 +22,3 @@ class Task:
             return "user_id is not specified"
         elif not hasattr(self, "status"):
             self.status = defaultStatus
-
-    def ParseDict(self, dictObj):
-        self.id = dictObj["id"]
-        self.project_id = dictObj["project_id"]
-        self.user_id = dictObj["user_id"]
-        self.content = dictObj["content"]
-        self.status = dictObj["status"]
-
-

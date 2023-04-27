@@ -6,6 +6,7 @@ from src.http_status_code_enum import HttpCode, HTTPContentType
 import json
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 taskController = TaskController()
 userController = UserController()
 
@@ -18,15 +19,10 @@ def create_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == HTTPContentType.JSON.value):
         task = Task(**request.json)
-        print(request.json)
-        err = task.Validate()
-        # err = task.Parse(request.json)
-        if err != None:
-            return err, HttpCode.BadRequest.value
         
         err = taskController.CreateTask(task)
         if err != None:
-            return err.__str__, HttpCode.BadRequest.value
+            return err, HttpCode.BadRequest.value
         
         return "create task successful", HttpCode.Success.value
     

@@ -6,6 +6,9 @@ class TaskController:
         pass
 
     def CreateTask(self, task):
+        err = task.Validate()
+        if err != None:
+            return err
         return self.taskDao.CreateTaskEntry(task)
 
     def GetAllTask(self):
