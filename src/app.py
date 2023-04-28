@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, make_response
 from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
@@ -32,7 +32,9 @@ def create_task_handler():
 @app.route('/task/get_all_task', methods=['GET'])
 def get_all_task_handler():
     taskList = taskController.GetAllTask()
-    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
+    # resp = make_response(json.dumps(taskList, indent=4, default=str))
+    # resp.headers.add('Access-Control-Allow-Origin', '*')
+    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value, 'Access-Control-Allow-Origin': '*'}
 
 @app.route('/user', methods=['GET'])
 def user_handler_Get():
@@ -79,4 +81,4 @@ def project_handler():
 
 
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0', port=3000)
+    app.run(host ='0.0.0.0', port=3001)
