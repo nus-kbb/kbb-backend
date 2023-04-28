@@ -20,6 +20,24 @@ class TaskDao(DBDAO):
                 print("Error create task: ", e)
                 return e.__str__
     
+    def UpdateTaskEntry(self, task):
+        with self.engine.connect() as conn:
+            try:
+                conn.execute(text(f"UPDATE {self.db}.{self.taskTabName} SET `project_id` = {task.project_id}, `user_id` = {task.user_id}, `status` = '{task.status.value}', `content` = '{task.content}' WHERE `id` = {task.id}"))
+                conn.commit()
+            except Exception as e:
+                print("Error update task: ", e)
+                return e.__str__   
+
+    def DeleteTaskEntry(self, task):
+        with self.engine.connect() as conn:
+            try:
+                conn.execute(text(f"DELETE FROM {self.db}.{self.taskTabName} WHERE `id` = {task.id}"))
+                conn.commit()  
+            except Exception as e:
+                print("Error delete task: ", e)
+                return e.__str__  
+    
     def GetAllTask(self):
         with self.engine.connect() as conn:
             try:
