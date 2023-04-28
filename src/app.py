@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
+from src.controller.project_controller.project_controller import ProjectController
 from src.http_status_code_enum import HttpCode, HTTPContentType
 import json
 
@@ -61,6 +62,20 @@ def user_handler():
         return userController.delete_user_by_userEmail(userEmail)
     else:
         return "Invalid User Request", HttpCode.BadRequest.value
+
+
+
+@app.route('/project', methods=['POST'])
+def project_handler():
+    if request.method == 'POST':
+        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
+            print(request.json)
+            return ProjectController().create_project(request.json)
+        else:
+            return "Invalid Content-Type", HttpCode.BadRequest.value
+    else:
+        return "Invalid User Request", HttpCode.BadRequest.value
+
 
 
 if __name__ == "__main__":
