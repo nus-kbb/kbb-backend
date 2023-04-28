@@ -12,15 +12,17 @@ class TaskController:
         return self.taskDao.CreateTaskEntry(task)
 
     def UpdateTask(self, task):
+        err = task.ValidateWithID()
+        if err != None:
+            return err
         self.taskDao.UpdateTaskEntry(task)
-        # call dao to update task
-        print("calling dao to update task")
         return None
 
     def DeleteTask(self, task):
+        err = task.ValidateWithID()
+        if err != None:
+            return err
         self.taskDao.DeleteTaskEntry(task)
-        # call dao to delete task
-        print("calling dao to delete task")
         return None
 
     def GetAllTask(self):

@@ -33,10 +33,7 @@ def create_task_handler():
 def update_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
-        task = Task()
-        err = task.Parse(request.json)
-        if err != None:
-            return err, HttpCode.BadRequest.value
+        task = Task(**request.json)
         
         err = taskController.UpdateTask(task)
         if err != None:
@@ -50,10 +47,7 @@ def update_task_handler():
 def delete_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
-        task = Task()
-        err = task.Parse(request.json)
-        if err != None:
-            return err, HttpCode.BadRequest.value
+        task = Task(**request.json)
         
         err = taskController.DeleteTask(task)
         if err != None:
