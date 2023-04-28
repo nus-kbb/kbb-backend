@@ -1,4 +1,6 @@
 import os
+# from dotenv import load_dotenv
+# load_dotenv('environment/.env_local')
 # string to configure the database connection - localhost (will have to change to cloud in the future)
 # Database parameters for local MySQL database
 local_host = os.getenv("localhost")

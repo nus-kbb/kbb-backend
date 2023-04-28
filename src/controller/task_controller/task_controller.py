@@ -1,4 +1,4 @@
-from .task_dao.task_dao import TaskDao
+from src.dao.task_dao.task_dao import TaskDao
 
 class TaskController:
     taskDao = TaskDao()
@@ -6,10 +6,10 @@ class TaskController:
         pass
 
     def CreateTask(self, task):
-        self.taskDao.CreateTaskEntry(task)
-        # call dao to create task
-        print("calling dao to create task")
-        return None
+        err = task.Validate()
+        if err != None:
+            return err
+        return self.taskDao.CreateTaskEntry(task)
 
     def UpdateTask(self, task):
         self.taskDao.UpdateTaskEntry(task)
@@ -24,6 +24,5 @@ class TaskController:
         return None
 
     def GetAllTask(self):
-        print("calling dao to get task")
-        taskList = []
-        return taskList, None
+        taskDictList = self.taskDao.GetAllTask()
+        return taskDictList
