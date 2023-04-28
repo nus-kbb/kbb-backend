@@ -1,4 +1,5 @@
-from flask import Flask, make_response
+from flask import Flask, request
+from flask_cors import CORS
 from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
@@ -8,6 +9,7 @@ import json
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+CORS(app)
 taskController = TaskController()
 userController = UserController()
 
@@ -34,7 +36,7 @@ def get_all_task_handler():
     taskList = taskController.GetAllTask()
     # resp = make_response(json.dumps(taskList, indent=4, default=str))
     # resp.headers.add('Access-Control-Allow-Origin', '*')
-    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value, 'Access-Control-Allow-Origin': '*'}
+    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
 
 @app.route('/user', methods=['GET'])
 def user_handler_Get():
