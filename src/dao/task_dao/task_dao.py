@@ -20,6 +20,24 @@ class TaskDao(DBDAO):
                 print("Error create task: ", e)
                 return e.__str__
     
+    def UpdateTaskEntry(self, task):
+        with self.engine.connect() as conn:
+            try:
+                conn.execute(text(f"UPDATE {local_database}.{self.table} SET `project_id` = {task.project_id}, `user_id` = {task.user_id}, `status` = '{task.status}', `content` = '{task.content}' WHERE `id` = {task.id}"))
+                conn.commit()
+            except Exception as e:
+                print("Error update task: ", e)
+                return e.__str__   
+
+    def DeleteTaskEntry(self, taskId):
+        with self.engine.connect() as conn:
+            try:
+                conn.execute(text(f"DELETE FROM {local_database}.{self.table} WHERE `id` = {taskId}"))
+                conn.commit()  
+            except Exception as e:
+                print("Error delete task: ", e)
+                return e.__str__  
+    
     def GetAllTask(self):
         with self.engine.connect() as conn:
             try:
@@ -34,14 +52,12 @@ class TaskDao(DBDAO):
         
     def GetTaskById(self, id):
         with self.engine.connect() as conn:
-            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE id={id}")).all()
-            rawTaskList = []
-            for r in results:
-                rawTask = {}
-                print(r._mapping)
-                for key, value in r._mapping.items():
-                    if key == "created_on":
-                        continue
-                    rawTask[key] = value
-                rawTaskList.append(rawTask)
-            return rawTaskList
+            try:
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE id = {id}"))
+                taskList = []
+                for r in results:
+                    taskList.append(Task(**r._mapping).__dict__)
+                return taskList
+            except Exception as e:
+                print("Error getting all task: ", e)
+                return e
