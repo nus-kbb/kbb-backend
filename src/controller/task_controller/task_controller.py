@@ -2,6 +2,7 @@ from src.dao.task_dao.task_dao import TaskDao
 
 class TaskController:
     taskDao = TaskDao()
+    
     def __init__(self) -> None:
         pass
 
@@ -34,3 +35,8 @@ class TaskController:
     def GetAllTask(self):
         taskDictList = self.taskDao.GetAllTask()
         return taskDictList
+    
+    def GetTaskByProjectId(self, projectId):
+        if projectId == "":
+            return "project id not defined"
+        return self.taskDao.GetTaskByProjectId(projectId)

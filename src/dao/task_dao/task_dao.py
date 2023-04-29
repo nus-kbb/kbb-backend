@@ -61,3 +61,15 @@ class TaskDao(DBDAO):
             except Exception as e:
                 print("Error getting all task: ", e)
                 return e
+    
+    def GetTaskByProjectId(self, projectId):
+        with self.engine.connect() as conn:
+            try:
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id = {projectId}"))
+                taskList = []
+                for r in results:
+                    taskList.append(Task(**r._mapping).__dict__)
+                return taskList
+            except Exception as e:
+                print("Error getting all task: ", e)
+                return e

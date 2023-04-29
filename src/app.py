@@ -59,6 +59,12 @@ def get_all_task_handler():
     taskList = taskController.GetAllTask()
     return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
 
+@app.route('/task/get_task', methods=['GET'])
+def get_task_by_project_id():
+    projectId = request.args.get('project_id',default='',type=str)
+    taskList = taskController.GetTaskByProjectId(projectId)
+    return json.dumps(taskList, indent=4, default=str), HttpCode.Success.value, {'Content-Type': HTTPContentType.JSON.value}
+
 @app.route('/user', methods=['GET'])
 def user_handler_Get():
     userEmail = request.args.get('userEmail',default='',type=str)
