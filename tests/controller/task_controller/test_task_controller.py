@@ -75,8 +75,8 @@ class TestUserController(unittest.TestCase):
         result = self.taskController.CreateTask(task)
         assert result == expectedMessage
     
-    # Get All Users unit test
-    def testGetAllUsers(self):
+    # Get All Task unit test
+    def testGetAllTask(self):
         taskList = []    
         for index in range(5):    
             taskDict = {
@@ -90,6 +90,87 @@ class TestUserController(unittest.TestCase):
         self.taskController.taskDao.GetAllTask = mock.Mock(return_value=taskList)
         result = self.taskController.GetAllTask()
         assert json.dumps(result, default=str) == json.dumps(taskList)
-        
-        
+    
+    # Update Task unit test
+    def testUpdateTask(self):
+        taskDict = {
+            "id": 1,
+            "project_id": 1,
+            "user_id": 1,
+            "status": Status.WAITING.value,
+            "content": "test"
+        }
+        task = Task(**taskDict)
+        expectedMessage = "update task successful"
+        expectedTaskList = [
+            {
+                "id": 1,
+                "project_id": 1,
+                "user_id": 1,
+                "status": Status.WAITING.value,
+                "content": "test"
+            }
+        ] 
+        self.taskController.taskDao.GetTaskById = mock.Mock(return_value=expectedTaskList)
+        self.taskController.taskDao.UpdateTaskEntry = mock.Mock(return_value=expectedMessage)
+        result = self.taskController.UpdateTask(task)
+        assert result == expectedMessage
 
+    def testUpdateTaskWhereIdIsNotSpecified(self):
+        taskDict = {
+            "project_id": 1,
+            "user_id": 1,
+            "status": Status.WAITING.value,
+            "content": "test"
+        }
+        task = Task(**taskDict)
+        expectedMessage = "id is not specified"
+        result = self.taskController.UpdateTask(task)
+        assert result == expectedMessage
+
+    def testUpdateTaskWhereTaskDoesNotExist(self):
+        taskDict = {
+            "id": 1,
+            "project_id": 1,
+            "user_id": 1,
+            "status": Status.WAITING.value,
+            "content": "test"
+        }
+        task = Task(**taskDict)
+        expectedMessage = "task does not exist in database"
+        expectedTaskList = [] 
+        self.taskController.taskDao.GetTaskById = mock.Mock(return_value=expectedTaskList)
+        result = self.taskController.UpdateTask(task)
+        assert result == expectedMessage
+
+    # delete task unit test 
+    def testDeleteTask(self):
+        taskId = "1"
+        expectedMessage = "delete task successful"
+        expectedTaskList = [
+            {
+                "id": 1,
+                "project_id": 1,
+                "user_id": 1,
+                "status": Status.WAITING.value,
+                "content": "test"
+            }
+        ] 
+        self.taskController.taskDao.GetTaskById = mock.Mock(return_value=expectedTaskList)
+        self.taskController.taskDao.DeleteTaskEntry = mock.Mock(return_value=expectedMessage)
+        result = self.taskController.DeleteTask(taskId)
+        assert result == expectedMessage
+    
+    def testDeleteTaskWhereIDIsNotSpecified(self):
+        taskId = ""
+        expectedMessage = "task id not defined"
+        result = self.taskController.DeleteTask(taskId)
+        assert result == expectedMessage
+
+    def testDeleteTaskWhereTaskDoesNotExist(self):
+        taskId = "1"
+        expectedMessage = "task does not exist in database"
+        expectedTaskList = [] 
+        self.taskController.taskDao.GetTaskById = mock.Mock(return_value=expectedTaskList)
+        result = self.taskController.DeleteTask(taskId)
+        assert result == expectedMessage

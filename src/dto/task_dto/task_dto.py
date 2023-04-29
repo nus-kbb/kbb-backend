@@ -24,8 +24,12 @@ class Task:
             self.status = defaultStatus
     
     def ValidateWithID(self):
-        err = self.Validate()
-        if not hasattr(self, "id"):
-            return "task id is not specified"
-        return err
+        if not hasattr(self, "project_id"):
+            return "project_id is not specified"
+        elif not hasattr(self, "user_id"):
+            return "user_id is not specified"
+        elif not hasattr(self, "id"):
+            return "id is not specified"
+        elif not hasattr(self, "status"):
+            self.status = defaultStatus
     

@@ -15,15 +15,21 @@ class TaskController:
         err = task.ValidateWithID()
         if err != None:
             return err
-        self.taskDao.UpdateTaskEntry(task)
-        return None
+        
+        taskList = self.taskDao.GetTaskById(task.id)
+        if len(taskList) == 0:
+            return "task does not exist in database"
+        return self.taskDao.UpdateTaskEntry(task)
 
-    def DeleteTask(self, task):
-        err = task.ValidateWithID()
-        if err != None:
-            return err
-        self.taskDao.DeleteTaskEntry(task)
-        return None
+    def DeleteTask(self, taskId):
+        if taskId == "":
+            return "task id not defined"
+
+        taskList = self.taskDao.GetTaskById(taskId)
+        if len(taskList) == 0:
+            return "task does not exist in database"
+        
+        return self.taskDao.DeleteTaskEntry(taskId)
 
     def GetAllTask(self):
         taskDictList = self.taskDao.GetAllTask()

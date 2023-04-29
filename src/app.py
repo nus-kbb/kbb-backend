@@ -45,17 +45,12 @@ def update_task_handler():
 
 @app.route('/task/delete_task', methods=['POST'])
 def delete_task_handler():
-    content_type = request.headers.get('Content-Type')
-    if (content_type == 'application/json'):
-        task = Task(**request.json)
+    taskId = request.args.get('id',default='',type=str)
+    err = taskController.DeleteTask(taskId)
+    if err != None:
+        return err, HttpCode.BadRequest.value
         
-        err = taskController.DeleteTask(task)
-        if err != None:
-            return err, HttpCode.BadRequest.value
-        
-        return "delete task successful", HttpCode.Success.value
-    
-    return 'Content-Type not supported!', HttpCode.BadRequest.value
+    return "delete task successful", HttpCode.Success.value
 
 @app.route('/task/get_all_task', methods=['GET'])
 def get_all_task_handler():
