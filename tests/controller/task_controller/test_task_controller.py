@@ -90,6 +90,33 @@ class TestUserController(unittest.TestCase):
         self.taskController.taskDao.GetAllTask = mock.Mock(return_value=taskList)
         result = self.taskController.GetAllTask()
         assert json.dumps(result, default=str) == json.dumps(taskList)
+
+    # Get Task By Project Id
+    def testGetTaskByProjectId(self):
+        taskList = []    
+        for index in range(5):    
+            taskDict = {
+                "id": index,
+                "project_id": 1,
+                "user_id": 1,
+                "status": Status.WAITING.value,
+                "content": "test"
+            }
+            taskList.append(taskDict)
+        self.taskController.taskDao.GetTaskByProjectId = mock.Mock(return_value=taskList)
+        result = self.taskController.GetTaskByProjectId("1")
+        assert json.dumps(result, default=str) == json.dumps(taskList)
+
+    def testGetTaskByProjectIdWhereProjectIdDidNotExist(self):
+        taskList = []
+        self.taskController.taskDao.GetTaskByProjectId = mock.Mock(return_value=taskList)
+        result = self.taskController.GetTaskByProjectId("0")
+        assert json.dumps(result, default=str) == json.dumps(taskList)
+
+    def testGetTaskByProjectIdWhereProjectIdIsNotSpecified(self):
+        expectedResul="project id not defined"
+        result = self.taskController.GetTaskByProjectId("")
+        assert json.dumps(result, default=str) == json.dumps(expectedResul)
     
     # Update Task unit test
     def testUpdateTask(self):
