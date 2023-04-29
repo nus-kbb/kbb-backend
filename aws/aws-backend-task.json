@@ -17,7 +17,19 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "localhost",
+                    "value": "vars.DBURL:3306"
+                }, 
+                {
+                    "name": "db_user",
+                    "value": "vars.DBUSER"
+                },{
+                    "name": "db_password",
+                    "value": "secrets.DBSECRET"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {
