@@ -4,6 +4,7 @@ from src.dto.project_dto.project_dto import Project
 class ProjectDAO(DBDAO):
 
     table = "project_table"
+    user_table = 'user_table'
 
     def __init__(self) -> None:
         super().__init__(table_name=self.table)
@@ -30,16 +31,21 @@ class ProjectDAO(DBDAO):
     #             _user.append(user.to_dict())
     #         return _user
         
-    # def get_user_by_userEmail(self, userEmail):
-    #     with self.engine.connect() as conn:
-    #         results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE user_email='{userEmail}'")).all()
-    #         # Since user is unique, we can return the first result
-    #         if len(results) == 0:
-    #             return None
-    #         else:
-    #             user = User.from_dict(results[0]._mapping)
-    #             return user.to_dict()
-        
+    def get_project_by_userID(self, userID):
+        with self.engine.connect() as conn:
+            results = conn.execute(text(f"SELECT {local_database}.{self.table}.* " 
+                                        f"FROM  {local_database}.{self.table} " 
+                                        f"JOIN {local_database}.{self.user_table} " 
+                                        f"ON {local_database}.{self.table}.id = {local_database}.{self.user_table}.project_id " 
+                                        f"WHERE {local_database}.{self.user_table}.id ='{userID}'")).all()
+            
+            # Since project is unique, we can return the first result
+            if len(results) == 0:
+                return None
+            else:
+                print(dict(results[0]._mapping))
+                #project = Project.from_dict(results[0]._mapping)
+                return dict(results[0]._mapping)
     # def update_user_by_userEmail(self, userEmail, user):
     #     with self.engine.connect() as conn:
     #         try:
