@@ -30,9 +30,9 @@ class ProjectController:
     #     user = self.userDAO.get_user_by_userEmail(userEmail)
     #     return jsonify(user)
     
-    # def delete_user_by_userEmail(self, userEmail):
-    #     result = self.userDAO.delete_user_by_userEmail(userEmail)
-    #     return jsonify(result)
+    def delete_project_by_projectID(self, projectID):
+        result = self.projectDAO.delete_project_by_projectID(projectID)
+        return jsonify(result)
     
     # def update_user_by_userEmail(self, json):
     #     id = json["id"]

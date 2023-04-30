@@ -90,12 +90,20 @@ def user_handler():
 
 
 
-@app.route('/project', methods=['POST'])
+@app.route('/project', methods=['POST','DELETE'])
 def project_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             print(request.json)
             return ProjectController().create_project(request.json)
+        else:
+            return "Invalid Content-Type", HttpCode.BadRequest.value
+    elif request.method == 'DELETE':
+        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
+            #print(request.json)
+            projectID = request.json['projectID']
+            #print(projectID)
+            return ProjectController().delete_project_by_projectID(projectID)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     else:

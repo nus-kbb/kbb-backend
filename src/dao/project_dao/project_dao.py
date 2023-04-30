@@ -53,11 +53,12 @@ class ProjectDAO(DBDAO):
     #         except Exception as e:
     #             return e
         
-    # def delete_user_by_userEmail(self, userEmail):
-    #     with self.engine.connect() as conn:
-    #         try: 
-    #             conn.execute(text(f"DELETE FROM {local_database}.{self.table} WHERE user_email = '{userEmail}'"))
-    #             conn.commit()
-    #             return "Success"
-    #         except Exception as e:
-    #             return e
+    def delete_project_by_projectID(self, projectID):
+        with self.engine.connect() as conn:
+            try: 
+                #print(text(f"DELETE FROM {local_database}.{self.table} WHERE id = '{projectID}'"))
+                conn.execute(text(f"DELETE FROM {local_database}.{self.table} WHERE id = '{projectID}'"))
+                conn.commit()
+                return "Success"
+            except Exception as e:
+                return e
