@@ -14,7 +14,7 @@ class UserController:
         user_password = json["user_password"]
         project_id = json["project_id"]
         # fake id to init User object
-        user = User(1,user_email, user_password, project_id)
+        user = User(None,user_email, user_password, project_id)
         try:
             user = self.userDAO.create_user(user)
             print(user)
@@ -25,6 +25,13 @@ class UserController:
     def get_all_users(self):
         users = self.userDAO.get_all_user()
         return jsonify(users)
+    
+    def get_all_users_by_projectId(self, projectId):
+        if projectId == None or projectId == "":
+            return "Project id is undefined"
+        else:
+            users = self.userDAO.get_all_users_by_projectId(projectId)
+            return jsonify(users)
     
     def get_user_by_userEmail(self, userEmail):
         user = self.userDAO.get_user_by_userEmail(userEmail)

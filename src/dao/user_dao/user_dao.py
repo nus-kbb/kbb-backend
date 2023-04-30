@@ -30,6 +30,15 @@ class UserDAO(DBDAO):
                 _user.append(user.to_dict())
             return _user
         
+    def get_all_users_by_projectId(self, projectId):
+        with self.engine.connect() as conn:
+            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
+            _user = []
+            for it in results:
+                user = User.from_dict(it._mapping)
+                _user.append(user.to_dict())
+            return _user
+        
     def get_user_by_userEmail(self, userEmail):
         with self.engine.connect() as conn:
             results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE user_email='{userEmail}'")).all()
