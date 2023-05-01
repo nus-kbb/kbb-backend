@@ -131,7 +131,7 @@ def project_handler():
     elif request.method == 'PUT':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             print(request.json)
-            return ProjectController().update_project(request.json)
+            return ProjectController().update_project_by_projectID(request.json)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     else:
