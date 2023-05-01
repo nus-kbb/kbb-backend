@@ -32,7 +32,31 @@ class TestUserController(unittest.TestCase):
         self.userController.userDAO.get_all_user = mock.Mock(return_value = users)
         result = self.userController.get_all_users()
         assert result.json == users
-
+    
+    def testGetUsersByProjectId(self):
+        usersList = []            
+        for index in range(3):
+            userDict = {
+                "id": 1,
+                "user_email": "useremail1@gmail.com",
+                "user_password": "userpassword1",
+                "project_id": 1
+            }
+            usersList.append(userDict)
+        self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = usersList)
+        result = self.userController.get_all_users_by_projectId(1)
+        assert result.json == usersList
+        
+    def test_get_users_by_projectid_empty(self):
+        # self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = [])
+        result = self.userController.get_all_users_by_projectId("")
+        assert result == "Project id is undefined"
+        
+    def test_get_users_by_projectid_none(self):
+        # self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = [])
+        result = self.userController.get_all_users_by_projectId(None)
+        assert result == "Project id is undefined"
+        
     def testGetUserByUserEmail(self):
         user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
         self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = user)
