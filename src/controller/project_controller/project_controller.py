@@ -34,13 +34,14 @@ class ProjectController:
         result = self.projectDAO.delete_project_by_projectID(projectID)
         return jsonify(result)
     
-    def update_project_by_userEmail(self, json):
+    def update_project_by_projectID(self, json):
         id = json["id"]
         project_name = json["project_name"]
         status = json["status"]
         content = json["content"]
         project = Project(id, project_name, status, content)
-        result = self.userDAO.update_user_by_userEmail(id, project)
+        result = self.projectDAO.update_project_by_projectID(id, project)
+        print(result)
         if result == None:
             return "Fail to update the project", HttpCode.BadRequest.value
         else:

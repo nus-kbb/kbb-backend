@@ -46,18 +46,18 @@ class ProjectDAO(DBDAO):
                 print(dict(results[0]._mapping))
                 #project = Project.from_dict(results[0]._mapping)
                 return dict(results[0]._mapping)
-    # def update_user_by_userEmail(self, userEmail, user):
-    #     with self.engine.connect() as conn:
-    #         try:
-    #             result = conn.execute(text(f"UPDATE {local_database}.{self.table} SET user_password = '{user.user_password}', project_id = '{user.project_id}' WHERE user_email = '{userEmail}'"))
-    #             conn.commit()
-    #             # Don't understand the result here
-    #             # if len(result.all()) == 0:
-    #             #     return None
-    #             # return result.all()
-    #             return user.to_dict()
-    #         except Exception as e:
-    #             return e
+    def update_project_by_projectID(self, id, project):
+        with self.engine.connect() as conn:
+            try:
+                result = conn.execute(text(f"UPDATE {local_database}.{self.table} \
+                                           SET project_name = '{project.project_name}', \
+                                           status = '{project.status}', \
+                                           content = '{project.content}' \
+                                           WHERE id = '{id}'"))
+                conn.commit()
+                return project.to_dict()
+            except Exception as e:
+                return e
         
     def delete_project_by_projectID(self, projectID):
         with self.engine.connect() as conn:
