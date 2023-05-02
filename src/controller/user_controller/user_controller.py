@@ -15,7 +15,8 @@ class UserController:
         # project_id = json["project_id"]
         # fake id to init User object
         user = User(None,user_email, user_password, None)
-        if self.get_user_by_userEmail(user_email) != None:
+
+        if result != None:
             return "user already exist", HttpCode.BadRequest.value
         try:
             user = self.userDAO.create_user(user)
