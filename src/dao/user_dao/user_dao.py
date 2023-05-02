@@ -13,7 +13,7 @@ class UserDAO(DBDAO):
     def create_user(self, user):
         with self.engine.connect() as conn:
             try:
-                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`, `project_id`) VALUES ('{user.user_email}',  '{user.user_password}',  '{user.project_id}')"))
+                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`) VALUES ('{user.user_email}',  '{user.user_password}')"))
                 conn.commit()
                 # Because can only create 1 item
                 user.id = result.lastrowid
