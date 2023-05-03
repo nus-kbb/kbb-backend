@@ -10,6 +10,7 @@ class User:
         return f"User({self.id}, {self.user_email}, {self.user_password}, {self.project_id})"
 
     def to_dict(self):
+        print(self)
         return {
             "id": self.id,
             "user_email": self.user_email,

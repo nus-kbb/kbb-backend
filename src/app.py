@@ -108,8 +108,8 @@ def user_handler():
 def project_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            print(request.json)
-            return ProjectController().create_project(request.json)
+            userEmail = request.args.get('user_email',default='',type=str)
+            return ProjectController().create_project(request.json, userEmail)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'DELETE':
