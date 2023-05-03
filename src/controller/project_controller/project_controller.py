@@ -45,6 +45,16 @@ class ProjectController:
     #     users = self.userDAO.get_all_user()
     #     return jsonify(users)
     
+    def get_all_project(self):
+        return jsonify(self.projectDAO.get_all_project())
+    
+    def get_all_project_names_only(self):
+        projectList = self.projectDAO.get_all_project()
+        projectNameList = []
+        for p in projectList:
+            projectNameList.append(p["project_name"])
+        return jsonify(projectNameList)
+
     def get_project_by_userID(self, userID):
         project = self.projectDAO.get_project_by_userID(userID)
         return jsonify(project)
@@ -65,3 +75,15 @@ class ProjectController:
             return "Fail to update the project", HttpCode.BadRequest.value
         else:
             return jsonify(result)
+    
+    def join_project(self, userEmail, projectName):
+        user = self.userDAO.get_user_by_userEmail(userEmail)
+        if type(user) == str:
+            return user
+        if user["project_id"] is not None:
+            return "user already has project"
+        projectId = self.projectDAO.get_project_id_by_name(projectName)
+        user["project_id"] = projectId
+        userObj = User.from_dict(user)
+        resultantUser = self.userDAO.update_user_by_userEmail(userEmail, userObj)
+        return jsonify(resultantUser)

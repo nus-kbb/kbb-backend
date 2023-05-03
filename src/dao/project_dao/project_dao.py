@@ -30,7 +30,27 @@ class ProjectDAO(DBDAO):
     #             user = User.from_dict(it._mapping)
     #             _user.append(user.to_dict())
     #         return _user
-        
+    def get_project_id_by_name(self, project_name):
+        with self.engine.connect() as conn:
+            try:
+                results = conn.execute(text(f"SELECT id from {local_database}.{self.table} WHERE project_name='{project_name}'"))
+                for r in results:
+                    return r._mapping["id"]
+                return "project name not found"
+            except Exception as e:
+                return e
+    def get_all_project(self):
+        with self.engine.connect() as conn:
+            try:
+                results = conn.execute(text(f"SELECT * FROM {local_database}.{self.table}"))
+                conn.commit()
+                projectList = []
+                for r in results:
+                    projectList.append(dict(r._mapping))
+                return projectList
+            except Exception as e:
+                return e
+
     def get_project_by_userID(self, userID):
         with self.engine.connect() as conn:
             results = conn.execute(text(f"SELECT {local_database}.{self.table}.* " 
