@@ -126,13 +126,8 @@ def project_handler():
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'GET':
-        if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            print(request.json)
-            userID = request.json['user_id']
-            print(userID)
+            userID = request.args.get('user_id',default='',type=str)
             return ProjectController().get_project_by_userID(userID)
-        else:
-            return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'PUT':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             print(request.json)
