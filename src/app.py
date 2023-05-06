@@ -6,6 +6,7 @@ from src.controller.user_controller.user_controller import UserController
 from src.controller.project_controller.project_controller import ProjectController
 from src.http_status_code_enum import HttpCode, HTTPContentType
 import json
+from src.controller.task_controller.item_factory_method import ItemFactoryMethod
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -21,7 +22,9 @@ def hello_world():
 def create_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == HTTPContentType.JSON.value):
-        task = Task(**request.json)
+        task = ItemFactoryMethod().create_Item(**request.json)
+        if task == None:
+            return "Task type is not supported", HttpCode.BadRequest.value
         
         err = taskController.CreateTask(task)
         if err != None:
@@ -35,7 +38,9 @@ def create_task_handler():
 def update_task_handler():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
-        task = Task(**request.json)
+        task = ItemFactoryMethod().create_Item(**request.json)
+        if task == None:
+            return "Task type is not supported", HttpCode.BadRequest.value
         
         err = taskController.UpdateTask(task)
         if err != None:

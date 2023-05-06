@@ -11,10 +11,11 @@ class TaskDao(DBDAO):
         self.engine = self.getEngine()
         pass
     
-    def CreateTaskEntry(self, task):
+    def CreateTaskEntry(self, task):        
         with self.engine.connect() as conn:
             try:
-                conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`project_id`, `user_id`, `status`, `content`) VALUES ({task.project_id},  {task.user_id},  '{task.status}',  '{task.content}')"))
+                conn._exec_insertmany_context
+                conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`project_id`, `user_id`, `status`, `content`, `type`, `version`, `story_points`) VALUES ({task.project_id},  {task.user_id},  '{task.status}',  '{task.content}', '{task.type}', {self.sqlquote(task.version)}, {self.sqlquote(task.story_points)})"))
                 conn.commit()
             except Exception as e:
                 print("Error create task: ", e)
@@ -23,7 +24,7 @@ class TaskDao(DBDAO):
     def UpdateTaskEntry(self, task):
         with self.engine.connect() as conn:
             try:
-                conn.execute(text(f"UPDATE {local_database}.{self.table} SET `project_id` = {task.project_id}, `user_id` = {task.user_id}, `status` = '{task.status}', `content` = '{task.content}' WHERE `id` = {task.id}"))
+                conn.execute(text(f"UPDATE {local_database}.{self.table} SET `project_id` = {task.project_id}, `user_id` = {task.user_id}, `status` = '{task.status}', `content` = '{task.content}', `type` = '{task.type}', `version` = {self.sqlquote(task.version)}, `story_points` = {self.sqlquote(task.story_points)}  WHERE `id` = {task.id}"))
                 conn.commit()
             except Exception as e:
                 print("Error update task: ", e)

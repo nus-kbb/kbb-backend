@@ -1,35 +1,25 @@
 from src.dto.task_dto.status_enum import Status
+from src.dto.task_dto.item import Item
 
-defaultStatus = Status.WAITING.value
-
-class Task:
-
+class Task(Item):
+    
+    story_points = None
+    version = None
+    
     def __init__(self, **kwargs) -> None:
-        for key, value in kwargs.items():
-            self.__dict__[key] = value
+        super().__init__(**kwargs)
         pass
     
-    def __repr__(self) -> str:
-        return f"Task({self.project_id}, {self.user_id}, {self.status}, {self.content})"
-    
-    def SetAssignee(self, assigneeId) -> None:
-        self.assignee = assigneeId
-    
     def Validate(self):
-        if not hasattr(self, "project_id"):
-            return "project_id is not specified"
-        elif not hasattr(self, "user_id"):
-            return "user_id is not specified"
-        elif not hasattr(self, "status"):
-            self.status = defaultStatus
+        if self.version != None:
+            return "version is not required"
+        elif self.story_points != None:
+            return "story_points is not required"
+        return super().Validate()
     
     def ValidateWithID(self):
-        if not hasattr(self, "project_id"):
-            return "project_id is not specified"
-        elif not hasattr(self, "user_id"):
-            return "user_id is not specified"
-        elif not hasattr(self, "id"):
-            return "id is not specified"
-        elif not hasattr(self, "status"):
-            self.status = defaultStatus
-    
+        if self.version != None:
+            return "version is not required"
+        elif self.story_points != None:
+            return "story_points is not required"
+        return super().ValidateWithID()

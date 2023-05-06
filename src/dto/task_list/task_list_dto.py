@@ -5,5 +5,3 @@ class Task:
         self.assignee =  assigneeId
         pass
 
-    def SetAssignee(self, assigneeId):
-        self.assignee = assigneeId
