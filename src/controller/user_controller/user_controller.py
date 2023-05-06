@@ -12,9 +12,13 @@ class UserController:
     def create_user(self,json):
         user_email = json["user_email"]
         user_password = json["user_password"]
-        project_id = json["project_id"]
+        # project_id = json["project_id"]
         # fake id to init User object
-        user = User(None,user_email, user_password, project_id)
+        user = User(None,user_email, user_password, None)
+        result = self.userDAO.get_user_by_userEmail(user_email)
+        print("crete user log", result)
+        if result != None:
+            return "user already exist", HttpCode.BadRequest.value
         try:
             user = self.userDAO.create_user(user)
             print(user)

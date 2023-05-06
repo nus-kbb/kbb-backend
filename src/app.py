@@ -108,8 +108,8 @@ def user_handler():
 def project_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
-            print(request.json)
-            return ProjectController().create_project(request.json)
+            userEmail = request.args.get('user_email',default='',type=str)
+            return ProjectController().create_project(request.json, userEmail)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
     elif request.method == 'DELETE':
@@ -137,6 +137,22 @@ def project_handler():
     else:
         return "Invalid User Request", HttpCode.BadRequest.value
 
+@app.route('/project/all', methods=['GET'])
+def get_all_project_handler():
+    return ProjectController().get_all_project()
+
+@app.route('/project/all_names', methods=['GET'])
+def get_all_project_handler_names_only():
+    return ProjectController().get_all_project_names_only()
+
+@app.route('/project/join_project', methods=['POST'])
+def join_project_handler():
+    if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
+        userEmail = request.json['user_email']
+        projectName = request.json['project_name']
+        return ProjectController().join_project(userEmail, projectName)
+    else:
+        return "Invalid Content-Type", HttpCode.BadRequest.value
 
 
 if __name__ == "__main__":

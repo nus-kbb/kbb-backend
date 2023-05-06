@@ -1,4 +1,5 @@
 import os
+from flask import jsonify
 from src.dao.databaseDAO import *
 from src.dto.user.user_dto import User
 class UserDAO(DBDAO):
@@ -13,7 +14,7 @@ class UserDAO(DBDAO):
     def create_user(self, user):
         with self.engine.connect() as conn:
             try:
-                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`, `project_id`) VALUES ('{user.user_email}',  '{user.user_password}',  '{user.project_id}')"))
+                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`) VALUES ('{user.user_email}',  '{user.user_password}')"))
                 conn.commit()
                 # Because can only create 1 item
                 user.id = result.lastrowid
@@ -41,19 +42,24 @@ class UserDAO(DBDAO):
         
     def get_user_by_userEmail(self, userEmail):
         with self.engine.connect() as conn:
-            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE user_email='{userEmail}'")).all()
-            # Since user is unique, we can return the first result
-            if len(results) == 0:
-                return None
-            else:
-                user = User.from_dict(results[0]._mapping)
-                return user.to_dict()
+            try:
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE user_email='{userEmail}'")).all()
+                # Since user is unique, we can return the first result
+                if len(results) == 0:
+                    return None
+                else:
+                    user = User.from_dict(results[0]._mapping)
+                    return user.to_dict()
+            except Exception as e:
+                return str(e)
         
     def update_user_by_userEmail(self, userEmail, user):
         with self.engine.connect() as conn:
             try:
+                print("executing update user by useremail")
                 result = conn.execute(text(f"UPDATE {local_database}.{self.table} SET user_password = '{user.user_password}', project_id = '{user.project_id}' WHERE user_email = '{userEmail}'"))
                 conn.commit()
+                print("update user result:", result)
                 # Don't understand the result here
                 # if len(result.all()) == 0:
                 #     return None

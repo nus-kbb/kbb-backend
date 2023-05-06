@@ -12,6 +12,8 @@ class TestUserController(unittest.TestCase):
          self.app_context = app.app_context()
          self.app_context.push()
          self.userController = UserController()
+         self.userController.userDAO.create_user = mock.Mock(return_value = None)
+         self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = None)
 
     def tearDown(self) -> None:
         self.app_context.pop()
@@ -65,9 +67,18 @@ class TestUserController(unittest.TestCase):
 
     def testCreateUser(self):
         user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        newuser = User(1, "useremail2", "userpassword1", "projectid1").to_dict()
         self.userController.userDAO.create_user = mock.Mock(return_value = user)
+        self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = None)
         result = self.userController.create_user(user)
         assert result.json == user
+        
+    def testCreateUser_AlreadyExists(self):
+        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        self.userController.userDAO.create_user = mock.Mock(return_value = user)
+        self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = user)
+        result = self.userController.create_user(user)
+        assert result == ('user already exist', HttpCode.BadRequest.value)
 
     def testCreateUser_DBError(self):
         user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
