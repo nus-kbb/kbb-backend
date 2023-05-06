@@ -12,14 +12,14 @@ class Bug(Item):
         return f"Bug({self.project_id}, {self.user_id}, {self.status}, {self.content}, {self.type} ,{self.version})"
     
     def ValidateWithID(self):
-        if not hasattr(self, "version"):
+        if not hasattr(self, "version") or self.version == None:
             return "version is not specified"
         elif self.story_points != None:
             return "story_points is not required"
         return super().ValidateWithID()
     
     def Validate(self):
-        if not hasattr(self, "version"):
+        if not hasattr(self, "version") or self.version == None:
             return "version is not specified"
         elif self.story_points != None:
             return "story_points is not required"
