@@ -18,3 +18,15 @@ class DBDAO:
     
     def getEngine(self):
         return self.engine
+    
+    def sqlquote(self, value):
+        """Naive SQL quoting
+
+        All values except NULL are returned as SQL strings in single quotes,
+        with any embedded quotes doubled.
+
+        """
+        if value is None:
+            return 'NULL'
+        else:
+            return "'{}'".format(str(value).replace("'", "''"))

@@ -18,6 +18,9 @@ class Task(Base):
     # TODO relationship with project and user
     user_id = Column(Integer, ForeignKey(User.id))
     status = Column(String(100))
+    type = Column(String(100))
+    story_points = Column(Integer)
+    version = Column(String(100))
     content = Column(String(100))
     created_on = Column(DateTime(timezone=True),server_default=func.now())
 
