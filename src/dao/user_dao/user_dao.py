@@ -14,7 +14,7 @@ class UserDAO(DBDAO):
     def create_user(self, user):
         with self.engine.connect() as conn:
             try:
-                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`) VALUES ('{user.user_email}',  '{user.user_password}')"))
+                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`, `role`) VALUES ('{user.user_email}',  '{user.user_password}', '{user.role}')"))
                 conn.commit()
                 # Because can only create 1 item
                 user.id = result.lastrowid
@@ -30,7 +30,16 @@ class UserDAO(DBDAO):
                 user = User.from_dict(it._mapping)
                 _user.append(user.to_dict())
             return _user
-        
+    
+    def get_user_by_role(self, role):
+         with self.engine.connect() as conn:
+            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE role='{role}'")).all()
+            _user = []
+            for it in results:
+                user = User.from_dict(it._mapping)
+                _user.append(user.to_dict())
+            return _user
+         
     def get_all_users_by_projectId(self, projectId):
         with self.engine.connect() as conn:
             results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
