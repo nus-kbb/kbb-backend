@@ -17,7 +17,6 @@ permissions:
 jobs:
   unit-test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -63,3 +62,28 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+
+  dast:
+    permissions: write-all
+    needs: sonar
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@master
+      with:
+        name: artifact
+        path: ${{ github.workspace }}/
+
+    - name: run docker image
+      run: docker run -d -p 5000:5000 $(docker build -q -f Dockerfile.backend .)
+
+    - name: OWASP ZAP
+      uses: zaproxy/action-baseline@v0.7.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        docker_name: 'owasp/zap2docker-stable'
+        # Target URL
+        target: "http://localhost:5000"
+        fail_action: false
+        allow_issue_writing: false
+        issue_title: Security Tests
+    
