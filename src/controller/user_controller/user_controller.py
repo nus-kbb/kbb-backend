@@ -48,7 +48,8 @@ class UserController:
         user_email = json["user_email"]
         user_password = json["user_password"]
         project_id = json["project_id"]
-        user = User(id, user_email, user_password, project_id)
+        role = json["role"]
+        user = User(id, user_email, user_password, project_id, role)
         result = self.userDAO.update_user_by_userEmail(user_email, user)
         if result == None:
             return "Fail to update", HttpCode.BadRequest.value

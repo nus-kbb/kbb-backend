@@ -24,7 +24,7 @@ class ProjectController:
         
         try:
             project = self.projectDAO.create_project(project)
-            print(project)
+            print("project creation: ", project)
         except Exception as e:
             return "Fail to create project", HttpCode.BadRequest.value
         finally:
@@ -37,7 +37,9 @@ class ProjectController:
                 # project creator is always the admin
                 user["role"] = Role.ADMIN.value
                 userObj = User.from_dict(user)
-                self.userDAO.update_user_by_userEmail(userEmail, userObj)
+                updatedUser = self.userDAO.update_user_by_userEmail(userEmail, userObj)
+                if type(updatedUser) == str:
+                    return "failed to update user by user email: " + updatedUser, HttpCode.BadRequest.value
                 return jsonify(project)
             except Exception as e:
                 return "failed to update user: " + str(e), HttpCode.BadRequest.value

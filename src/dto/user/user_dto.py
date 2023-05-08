@@ -26,7 +26,8 @@ class User:
             id=user_dict["id"],
             user_email=user_dict["user_email"],
             user_password=user_dict["user_password"],
-            project_id=user_dict["project_id"]
+            project_id=user_dict["project_id"],
+            role=user_dict["role"]
         )
 
     def to_json(self):
