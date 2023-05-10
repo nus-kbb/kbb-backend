@@ -14,7 +14,7 @@ class UserDAO(DBDAO):
     def create_user(self, user):
         with self.engine.connect() as conn:
             try:
-                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`) VALUES ('{user.user_email}',  '{user.user_password}')"))
+                result = conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`user_email`, `user_password`, `role`) VALUES ('{user.user_email}',  '{user.user_password}', '{user.role}')"))
                 conn.commit()
                 # Because can only create 1 item
                 user.id = result.lastrowid
@@ -30,10 +30,23 @@ class UserDAO(DBDAO):
                 user = User.from_dict(it._mapping)
                 _user.append(user.to_dict())
             return _user
-        
-    def get_all_users_by_projectId(self, projectId):
+    
+    def get_user_by_role(self, role):
+         with self.engine.connect() as conn:
+            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE role='{role}'")).all()
+            _user = []
+            for it in results:
+                user = User.from_dict(it._mapping)
+                _user.append(user.to_dict())
+            return _user
+         
+    def get_all_users_by_projectId(self, projectId, role
+                                   ):
         with self.engine.connect() as conn:
-            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
+            if role == '':
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
+            else:
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}' AND role='{role}'")).all()
             _user = []
             for it in results:
                 user = User.from_dict(it._mapping)
@@ -57,7 +70,7 @@ class UserDAO(DBDAO):
         with self.engine.connect() as conn:
             try:
                 print("executing update user by useremail")
-                result = conn.execute(text(f"UPDATE {local_database}.{self.table} SET user_password = '{user.user_password}', project_id = '{user.project_id}' WHERE user_email = '{userEmail}'"))
+                result = conn.execute(text(f"UPDATE {local_database}.{self.table} SET user_password = '{user.user_password}', project_id = '{user.project_id}', role='{user.role}' WHERE user_email = '{userEmail}'"))
                 conn.commit()
                 print("update user result:", result)
                 # Don't understand the result here
@@ -66,7 +79,7 @@ class UserDAO(DBDAO):
                 # return result.all()
                 return user.to_dict()
             except Exception as e:
-                return e
+                return str(e)
         
     def delete_user_by_userEmail(self, userEmail):
         with self.engine.connect() as conn:

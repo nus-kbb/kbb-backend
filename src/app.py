@@ -83,11 +83,11 @@ def user_handler_Get():
 @app.route('/user/get_user_by_project_id', methods=['GET'])
 def user_handler_Get_by_project_id():
     projectId = request.args.get('projectId',default='',type=str)
+    role = request.args.get('role', default='', type=str)
     if len(projectId) > 0:
-        return userController.get_all_users_by_projectId(projectId)
+        return userController.get_all_users_by_projectId(projectId, role)
     else:
         return "Invalid Get User", HttpCode.BadRequest.value
-
 
 @app.route('/user', methods=['POST', 'PUT', 'DELETE'])
 def user_handler():

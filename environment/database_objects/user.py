@@ -18,6 +18,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     user_email = Column(String(100), unique=True)
     project_id = Column(Integer)
+    role=Column(String(100))
     # TODO relationship with project
     user_password = Column(String(100))
     created_on = Column(DateTime(timezone=True),server_default=func.now())

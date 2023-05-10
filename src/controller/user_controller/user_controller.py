@@ -12,9 +12,7 @@ class UserController:
     def create_user(self,json):
         user_email = json["user_email"]
         user_password = json["user_password"]
-        # project_id = json["project_id"]
-        # fake id to init User object
-        user = User(None,user_email, user_password, None)
+        user = User(None,user_email, user_password, None, "")
         result = self.userDAO.get_user_by_userEmail(user_email)
         print("crete user log", result)
         if result != None:
@@ -30,11 +28,11 @@ class UserController:
         users = self.userDAO.get_all_user()
         return jsonify(users)
     
-    def get_all_users_by_projectId(self, projectId):
+    def get_all_users_by_projectId(self, projectId, role):
         if projectId == None or projectId == "":
             return "Project id is undefined"
         else:
-            users = self.userDAO.get_all_users_by_projectId(projectId)
+            users = self.userDAO.get_all_users_by_projectId(projectId, role)
             return jsonify(users)
     
     def get_user_by_userEmail(self, userEmail):
@@ -50,7 +48,8 @@ class UserController:
         user_email = json["user_email"]
         user_password = json["user_password"]
         project_id = json["project_id"]
-        user = User(id, user_email, user_password, project_id)
+        role = json["role"]
+        user = User(id, user_email, user_password, project_id, role)
         result = self.userDAO.update_user_by_userEmail(user_email, user)
         if result == None:
             return "Fail to update", HttpCode.BadRequest.value

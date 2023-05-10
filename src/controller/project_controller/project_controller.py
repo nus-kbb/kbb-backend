@@ -3,6 +3,7 @@ from src.dao.project_dao.project_dao import ProjectDAO
 from src.dao.user_dao.user_dao import UserDAO
 from src.dto.project_dto.project_dto import Project
 from src.dto.user.user_dto import User
+from src.dto.user.user_role_enum import Role
 from src.http_status_code_enum import HttpCode
 class ProjectController:
 
@@ -20,11 +21,10 @@ class ProjectController:
         # fake id to init project object
         # Add default status
         project = Project(1,project_name, "ACTIVE", content)
-
         
         try:
             project = self.projectDAO.create_project(project)
-            print(project)
+            print("project creation: ", project)
         except Exception as e:
             return "Fail to create project", HttpCode.BadRequest.value
         finally:
@@ -34,8 +34,12 @@ class ProjectController:
                     return "failed to get user by user email: " + user, HttpCode.BadRequest.value
                 print("update user project id")
                 user["project_id"] = project["id"]
+                # project creator is always the admin
+                user["role"] = Role.ADMIN.value
                 userObj = User.from_dict(user)
-                self.userDAO.update_user_by_userEmail(userEmail, userObj)
+                updatedUser = self.userDAO.update_user_by_userEmail(userEmail, userObj)
+                if type(updatedUser) == str:
+                    return "failed to update user by user email: " + updatedUser, HttpCode.BadRequest.value
                 return jsonify(project)
             except Exception as e:
                 return "failed to update user: " + str(e), HttpCode.BadRequest.value
