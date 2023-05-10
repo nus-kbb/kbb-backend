@@ -28,11 +28,11 @@ class UserController:
         users = self.userDAO.get_all_user()
         return jsonify(users)
     
-    def get_all_users_by_projectId(self, projectId):
+    def get_all_users_by_projectId(self, projectId, role):
         if projectId == None or projectId == "":
             return "Project id is undefined"
         else:
-            users = self.userDAO.get_all_users_by_projectId(projectId)
+            users = self.userDAO.get_all_users_by_projectId(projectId, role)
             return jsonify(users)
     
     def get_user_by_userEmail(self, userEmail):

@@ -40,9 +40,13 @@ class UserDAO(DBDAO):
                 _user.append(user.to_dict())
             return _user
          
-    def get_all_users_by_projectId(self, projectId):
+    def get_all_users_by_projectId(self, projectId, role
+                                   ):
         with self.engine.connect() as conn:
-            results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
+            if role == '':
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}'")).all()
+            else:
+                results = conn.execute(text(f"SELECT * FROM  {local_database}.{self.table} WHERE project_id='{projectId}' AND role='{role}'")).all()
             _user = []
             for it in results:
                 user = User.from_dict(it._mapping)

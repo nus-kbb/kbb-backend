@@ -14,7 +14,6 @@ class TaskDao(DBDAO):
     def CreateTaskEntry(self, task):        
         with self.engine.connect() as conn:
             try:
-                # conn._exec_insertmany_context
                 conn.execute(text(f"INSERT INTO  {local_database}.{self.table} (`project_id`, `user_id`, `status`, `content`, `type`, `version`, `story_points`) VALUES ({task.project_id},  {task.user_id},  '{task.status}',  '{task.content}', '{task.type}', {self.sqlquote(task.version)}, {self.sqlquote(task.story_points)})"))
                 conn.commit()
             except Exception as e:
