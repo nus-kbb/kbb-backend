@@ -27,22 +27,23 @@ class ProjectController:
             print("project creation: ", project)
         except Exception as e:
             return "Fail to create project", HttpCode.BadRequest.value
-        finally:
-            try:
-                user = self.userDAO.get_user_by_userEmail(userEmail)
-                if type(user) == str:
-                    return "failed to get user by user email: " + user, HttpCode.BadRequest.value
-                print("update user project id")
-                user["project_id"] = project["id"]
-                # project creator is always the admin
-                user["role"] = Role.ADMIN.value
-                userObj = User.from_dict(user)
-                updatedUser = self.userDAO.update_user_by_userEmail(userEmail, userObj)
-                if type(updatedUser) == str:
-                    return "failed to update user by user email: " + updatedUser, HttpCode.BadRequest.value
-                return jsonify(project)
-            except Exception as e:
-                return "failed to update user: " + str(e), HttpCode.BadRequest.value
+        
+        try:
+            user = self.userDAO.get_user_by_userEmail(userEmail)
+            if type(user) == str:
+                return "failed to get user by user email: " + user, HttpCode.BadRequest.value
+            print("update user project id")
+            user["project_id"] = project["id"]
+            # project creator is always the admin
+            user["role"] = Role.ADMIN.value
+            userObj = User.from_dict(user)
+            updatedUser = self.userDAO.update_user_by_userEmail(userEmail, userObj)
+            if type(updatedUser) == str:
+                return "failed to update user by user email: " + updatedUser, HttpCode.BadRequest.value
+            return jsonify(project)
+        except Exception as e:
+            return "failed to update user: " + str(e), HttpCode.BadRequest.value
+
 
     
     # def get_all_users(self):
