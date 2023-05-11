@@ -107,9 +107,16 @@ def user_handler():
     else:
         return "Invalid User Request", HttpCode.BadRequest.value
 
+@app.route('/project', methods=['GET'])
+def get_project_handler():
+    if request.method == 'GET':
+        userID = request.args.get('user_id',default='',type=str)
+        return ProjectController().get_project_by_userID(userID)
+    else:
+        return "Invalid User Request", HttpCode.BadRequest.value
+        
 
-
-@app.route('/project', methods=['POST','GET','DELETE','PUT'])
+@app.route('/project', methods=['POST','DELETE','PUT'])
 def project_handler():
     if request.method == 'POST':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
@@ -125,9 +132,6 @@ def project_handler():
             return ProjectController().delete_project_by_projectID(projectID)
         else:
             return "Invalid Content-Type", HttpCode.BadRequest.value
-    elif request.method == 'GET':
-            userID = request.args.get('user_id',default='',type=str)
-            return ProjectController().get_project_by_userID(userID)
     elif request.method == 'PUT':
         if request.headers.get('Content-Type') == HTTPContentType.JSON.value:
             print(request.json)
