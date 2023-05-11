@@ -7,4 +7,4 @@ mysql-connector-python==8.0.32
 cryptography
 python-dotenv
 flask_cors
-# mysqlclient
+Flask-WTF
