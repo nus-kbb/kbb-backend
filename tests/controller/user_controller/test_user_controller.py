@@ -24,7 +24,7 @@ class TestUserController(unittest.TestCase):
         assert result != None
 
     def testGetAllUsers(self):
-        users = [User(1, "useremail1", "userpassword1", "projectid1").to_dict(), User(2, "useremail2", "userpassword2", "projectid2").to_dict()]
+        users = [User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict(), User(2, "useremail2", "userpassword2", "projectid2", "admin").to_dict()]
         self.userController.userDAO.get_all_user = mock.Mock(return_value = users)
         result = self.userController.get_all_users()
         assert result.json == users
@@ -42,52 +42,50 @@ class TestUserController(unittest.TestCase):
                 "id": 1,
                 "user_email": "useremail1@gmail.com",
                 "user_password": "userpassword1",
-                "project_id": 1
+                "project_id": 1,
+                "role": "admin"
             }
             usersList.append(userDict)
         self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = usersList)
-        result = self.userController.get_all_users_by_projectId(1)
+        result = self.userController.get_all_users_by_projectId(1, "admin")
         assert result.json == usersList
         
     def test_get_users_by_projectid_empty(self):
-        # self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = [])
-        result = self.userController.get_all_users_by_projectId("")
+        result = self.userController.get_all_users_by_projectId("", "admin")
         assert result == "Project id is undefined"
         
     def test_get_users_by_projectid_none(self):
-        # self.userController.userDAO.get_all_users_by_projectId = mock.Mock(return_value = [])
-        result = self.userController.get_all_users_by_projectId(None)
+        result = self.userController.get_all_users_by_projectId(None, "admin")
         assert result == "Project id is undefined"
         
     def testGetUserByUserEmail(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = user)
         result = self.userController.get_user_by_userEmail("useremail1")
         assert result.json == user
 
     def testCreateUser(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
-        newuser = User(1, "useremail2", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.create_user = mock.Mock(return_value = user)
         self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = None)
         result = self.userController.create_user(user)
         assert result.json == user
         
     def testCreateUser_AlreadyExists(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.create_user = mock.Mock(return_value = user)
         self.userController.userDAO.get_user_by_userEmail = mock.Mock(return_value = user)
         result = self.userController.create_user(user)
         assert result == ('user already exist', HttpCode.BadRequest.value)
 
     def testCreateUser_DBError(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.create_user = mock.Mock(return_value = Exception)
         result = self.userController.create_user(user)
         assert result == ("Fail to create", HttpCode.BadRequest.value)
 
     def testUpdateUserByUserEmail(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.update_user_by_userEmail = mock.Mock(return_value = user)
         result = self.userController.update_user_by_userEmail(user)
         assert result.json == user
@@ -98,13 +96,13 @@ class TestUserController(unittest.TestCase):
         assert result.json == 'Success'
 
     def testUpdateUserByUserEmail(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.update_user_by_userEmail = mock.Mock(return_value = user)
         result = self.userController.update_user_by_userEmail(user)
         assert result.json == user
     
     def testUpdateUserByUserEmailUser_NotFound(self):
-        user = User(1, "useremail1", "userpassword1", "projectid1").to_dict()
+        user = User(1, "useremail1", "userpassword1", "projectid1", "admin").to_dict()
         self.userController.userDAO.update_user_by_userEmail = mock.Mock(return_value = None)
         result = self.userController.update_user_by_userEmail(user)
         assert result == ("Fail to update", HttpCode.BadRequest.value)
