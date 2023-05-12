@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_wtf.csrf import CSRFProtect
 from src.dto.task_dto.task_dto import Task
 from src.controller.task_controller.task_controller import TaskController
 from src.controller.user_controller.user_controller import UserController
