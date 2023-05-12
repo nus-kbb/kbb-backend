@@ -10,8 +10,6 @@ import json
 from src.controller.task_controller.item_factory_method import ItemFactoryMethod
 
 app = Flask(__name__)
-csrf = CSRFProtect()
-csrf.init_app(app)
 
 app.config['JSON_SORT_KEYS'] = False
 CORS(app)
